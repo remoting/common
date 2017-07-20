@@ -25,3 +25,10 @@ func Split(s string) []string {
 		return false
 	})
 }
+func IsEmpty(s string) bool {
+	if len(strings.TrimSpace(s)) <= 0 {
+		return true
+	} else {
+		return false
+	}
+}
