@@ -1,0 +1,12 @@
+*.settings
+*.idea
+*.classpath
+*.iml
+*.project
+*.DS_Store
+*.externalToolBuilders
+*.test
+*.vscode
+*.log
+/logs
+/debug
