@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -13,8 +14,23 @@ func TestString001(t *testing.T) {
 		fmt.Printf("%s=%s\n", k, v)
 	}
 	fmt.Printf("===\n")
-	fmt.Printf("=%s=", strings.TrimSpace(" \n  "))
+	fmt.Printf("=%s=\n", strings.TrimSpace(" \n  "))
+	var x string
+	var b map[string]string
+	d := make(map[string]string, 0)
+	var e map[string]string
+	var c []string
+	if x = "A"; len(x) > 0 {
 
+	}
+	fmt.Printf("|%s|\n", x)
+	fmt.Printf("|%v|\n", b)
+	fmt.Printf("|%v|\n", c)
+	fmt.Printf("|%v|\n", d)
+	fmt.Printf("%t\n", b == nil)
+	fmt.Printf("%t\n", c == nil)
+	fmt.Printf("%t\n", reflect.DeepEqual(b, d))
+	fmt.Printf("%t\n", reflect.DeepEqual(b, e))
 }
 
 func TestString002(t *testing.T) {
