@@ -1,4 +1,4 @@
-package utils
+package base58
 
 import "testing"
 import "fmt"
