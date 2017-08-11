@@ -1,4 +1,4 @@
-package log
+package logger
 
 import (
 	"bytes"
@@ -11,10 +11,10 @@ import (
 	"github.com/natefinch/lumberjack"
 )
 
-var errorLog, debugLog, warnLog *log.Logger
+var errorLog, infoLog, warnLog *log.Logger
 var _level int = -999
 
-type LogConfig struct {
+type Config struct {
 	Prefix     string
 	LogDir     string
 	Level      int
@@ -24,7 +24,7 @@ type LogConfig struct {
 
 // InitConfig ...
 // 5=debug,10=warn,15=error
-func InitConfig(conf LogConfig) {
+func InitConfig(conf Config) io.Writer {
 	if len(conf.LogDir) <= 0 {
 		conf.LogDir = "./logs/"
 	}
@@ -43,13 +43,14 @@ func InitConfig(conf LogConfig) {
 	}
 	errorLog = log.New(io.MultiWriter(os.Stdout, errorLogFile), "["+conf.Prefix+"-ERROR] ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	debugLogFile := &lumberjack.Logger{
+	infoLogFile := &lumberjack.Logger{
 		Filename:   conf.LogDir + "debug.log",
 		MaxSize:    conf.MaxSize, // megabytes
 		MaxBackups: conf.MaxBackups,
 		MaxAge:     28, // days
 	}
-	debugLog = log.New(io.MultiWriter(os.Stdout, debugLogFile), "["+conf.Prefix+"-DEBUG] ", log.Ldate|log.Ltime|log.Lshortfile)
+	writer := io.MultiWriter(os.Stdout, infoLogFile)
+	infoLog = log.New(writer, "["+conf.Prefix+"-INFO] ", log.Ldate|log.Ltime|log.Lshortfile)
 
 	warnLogFile := &lumberjack.Logger{
 		Filename:   conf.LogDir + "warn.log",
@@ -58,6 +59,8 @@ func InitConfig(conf LogConfig) {
 		MaxAge:     28, // days
 	}
 	warnLog = log.New(io.MultiWriter(os.Stdout, warnLogFile), "["+conf.Prefix+"-WARN] ", log.Ldate|log.Ltime|log.Llongfile)
+
+	return writer
 }
 
 func Error(format string, v ...interface{}) {
@@ -70,12 +73,12 @@ func Error(format string, v ...interface{}) {
 		}
 	}
 }
-func Debug(format string, v ...interface{}) {
+func Info(format string, v ...interface{}) {
 	if _level == -999 {
 		fmt.Printf("Log Uninitialized:"+format, v...)
 	} else {
 		if _level <= 5 {
-			debugLog.Output(2, fmt.Sprintf(format, v...))
+			infoLog.Output(2, fmt.Sprintf(format, v...))
 		}
 	}
 }

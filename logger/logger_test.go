@@ -1,4 +1,4 @@
-package log
+package logger
 
 import (
 	"fmt"
@@ -7,16 +7,16 @@ import (
 
 func TestLog_1(t *testing.T) {
 	fmt.Printf("sssssssssssssss\n")
-	x := LogConfig{}
+	x := Config{}
 	InitConfig(x)
 	for index := 0; index < 10; index++ {
 		Error("aaa=%v", "eee")
-		Debug("aaa=%v", "eee")
+		Info("aaa=%v", "eee")
 		Warn("aaa=%v", "eee")
 	}
 }
 func TestLog_2(t *testing.T) {
-	InitConfig(LogConfig{})
+	InitConfig(Config{})
 	fmt.Printf("sssssssssssssss\n")
 	xxx()
 }
@@ -29,6 +29,8 @@ func yyy() {
 }
 func zzz() {
 	//fmt.Printf("%s", Stack())
+	Info("aaa=%v", "eee")
+	Warn("aaa=%v", "eee")
 	Error("aaa=%v", "eee")
 	fmt.Printf("bbbbbb\n")
 }
