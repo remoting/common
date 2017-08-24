@@ -8,6 +8,8 @@
 *.test
 *.vscode
 *.log
+*.crt
+*.key
 test.*
 /logs
 /debug
